@@ -11,6 +11,6 @@ namespace Reader.Intarfaces
         public void Read(string path);
         public void Save(string path, string text);
         public int Count();
-        public string GetPage(int page);
+        public Dictionary<int,string> GetPages();
     }
 }

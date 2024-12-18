@@ -1,11 +1,10 @@
 ﻿
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 
 using DocumentTranslator.Helpers;
+using DocumentTranslator.Services;
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 
 using Model.Enums;
@@ -15,6 +14,8 @@ namespace DocumentTranslator.ViewModel
 {
     public class DocumentTranslatorAIViewModel
     {
+        private Translator _translator;
+
         public ObservableCollection<LanguageItem> LanguagesItems { get; set; }
 
         public NotifyProperty<object> SelectLanguages { get; set; } = new NotifyProperty<object>(new object());
@@ -28,8 +29,11 @@ namespace DocumentTranslator.ViewModel
         public ICommand RunCommand { get; set; }
 
 
-        public DocumentTranslatorAIViewModel()
+
+        public DocumentTranslatorAIViewModel(Translator translator)
         {
+            _translator = translator;
+
             LanguagesItems = new ObservableCollection<LanguageItem>
             {
                 new LanguageItem { Id = 1, Languages = Languages.Русский },
@@ -57,7 +61,14 @@ namespace DocumentTranslator.ViewModel
 
         private async Task Run(object? parameter)
         {
-            
+            var item = (LanguageItem)SelectLanguages.Value;
+            _translator.OnNotify += Notify;
+            await _translator.Tranlate(Path.Value, item.Id);
+        }
+
+        private async Task Notify(string message)
+        {
+            Percent.Value = message;
         }
     }
 }

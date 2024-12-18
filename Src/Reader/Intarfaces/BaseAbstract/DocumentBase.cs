@@ -6,7 +6,7 @@
 
         public abstract int Count();
 
-        public abstract string GetPage(int page);
+        public abstract Dictionary<int,string> GetPages();
 
         public abstract void Read(string path);
 

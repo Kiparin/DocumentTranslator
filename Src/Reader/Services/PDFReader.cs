@@ -11,6 +11,8 @@ namespace Reader.Services
     {
         private Dictionary<int,string> _pages = new Dictionary<int,string>();
 
+        public Dictionary<int, string> TranslatedPage { get; set; } = new Dictionary<int, string>();
+     
         public PDFReader() 
         {
             Id = "PDF";
@@ -18,7 +20,7 @@ namespace Reader.Services
 
         public override int Count() => _pages.Count;
 
-        public override string GetPage(int page) => _pages[page];
+        public override Dictionary<int,string> GetPages() => _pages;
 
         public override void Read(string path)
         {
@@ -31,7 +33,6 @@ namespace Reader.Services
                     _pages[iteratop] = text;
                     iteratop++;
                 }
-
             }
         }
 

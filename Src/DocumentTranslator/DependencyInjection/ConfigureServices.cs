@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Api;
 
-using Reader.Intarfaces;
+using DocumentTranslator.Services;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Reader.Services;
 
 namespace DocumentTranslator.DependencyInjection
@@ -9,7 +12,9 @@ namespace DocumentTranslator.DependencyInjection
     {
         internal static void Configure(ServiceCollection services)
         {
-            services.AddSingleton<IDocument, PDFReader>();
+            services.AddTransient<PDFReader>();
+            services.AddTransient<Translator>();
+            services.AddTransient<ApiService>();
         }
     }
 }
