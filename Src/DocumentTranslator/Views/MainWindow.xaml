@@ -23,13 +23,13 @@
         <Label Content="Translate to..." Margin="0,1,66,0" VerticalAlignment="Top"  Width="79" HorizontalAlignment="Right"/>
         <Label 
             Content="{Binding Percent.Value}"  
-            Margin="0,0,0,20" 
+            Margin="0,137,0,0" 
             HorizontalContentAlignment="Center" 
             FontStyle="Italic"  
             HorizontalAlignment="Center" 
-            Width="64" 
+            Width="313" 
             Height="27"
-            VerticalAlignment="Bottom"/>
+            VerticalAlignment="Top"/>
         <Button 
             Content="Open File" 
             Margin="33,24,0,0" 
@@ -47,6 +47,6 @@
         <Button 
             Content="Run" 
             Command="{Binding RunCommand}"
-            Margin="168,141,168,0" Height="20" VerticalAlignment="Top" />
+            Margin="168,117,168,0" Height="20" VerticalAlignment="Top" />
     </Grid>
 </Window>

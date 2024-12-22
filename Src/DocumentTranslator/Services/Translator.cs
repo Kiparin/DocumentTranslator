@@ -1,4 +1,6 @@
 ﻿
+using System.IO;
+
 using Api;
 
 using Model.Interfaces;
@@ -40,13 +42,23 @@ namespace DocumentTranslator.Services
 
             foreach (var item in _pdfReade.GetPages())
             {
+                await OnNotify?.Invoke("Translate " + item.Key + " page in " + _pdfReade.GetPages().Count);
                 var result = await _api.SendAsync(item.Value);
                 if (result != null) 
-                { 
-
+                {
+                    var choice = result.Choices.FirstOrDefault();
+                    _pdfReade.TranslatedPage.Add(item.Key, choice?.Message.Content ?? "");
                 }
             }
-            
+
+            if(_pdfReade.TranslatedPage.Count != 0)
+            {
+                await OnNotify?.Invoke("Save to dock");
+                _pdfReade.Save(Path.GetFileName(path));
+            }
+
+            await OnNotify?.Invoke("Cleare");
+            _pdfReade.Dispose();
         }
     }
 }

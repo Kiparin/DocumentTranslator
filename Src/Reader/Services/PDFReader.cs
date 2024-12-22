@@ -1,26 +1,25 @@
-﻿using System.Xml;
-
-using Reader.Intarfaces.BaseAbstract;
+﻿using Reader.Intarfaces.BaseAbstract;
 
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
+using Novacode;
 
 namespace Reader.Services
 {
     public class PDFReader : DocumentBase, IDisposable
     {
-        private Dictionary<int,string> _pages = new Dictionary<int,string>();
+        private Dictionary<int, string> _pages = new Dictionary<int, string>();
 
         public Dictionary<int, string> TranslatedPage { get; set; } = new Dictionary<int, string>();
-     
-        public PDFReader() 
+
+        public PDFReader()
         {
             Id = "PDF";
         }
 
         public override int Count() => _pages.Count;
 
-        public override Dictionary<int,string> GetPages() => _pages;
+        public override Dictionary<int, string> GetPages() => _pages;
 
         public override void Read(string path)
         {
@@ -36,9 +35,19 @@ namespace Reader.Services
             }
         }
 
-        public void Save()
+        public void Save(string nameFile)
         {
-
+            using (var doc = DocX.Create(nameFile + ".docx"))
+            {
+                foreach (var page in TranslatedPage)
+                {
+                    if (page.Value != null)
+                    {
+                        doc.InsertParagraphs(page.Value);
+                    }
+                }
+                doc.Save();
+            }
         }
 
         public void Dispose()
@@ -46,6 +55,7 @@ namespace Reader.Services
             if (_pages != null)
             {
                 _pages.Clear();
+                TranslatedPage.Clear();
             }
 
             GC.SuppressFinalize(this);

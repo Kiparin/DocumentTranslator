@@ -1,6 +1,8 @@
 ﻿
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 using DocumentTranslator.Helpers;
 using DocumentTranslator.Services;
@@ -50,7 +52,7 @@ namespace DocumentTranslator.ViewModel
             {
                 Filter = "PDF files (*.pdf)|*.pdf",
                 Title = "Select a PDF file",
-                Multiselect = false 
+                Multiselect = false
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -61,14 +63,42 @@ namespace DocumentTranslator.ViewModel
 
         private async Task Run(object? parameter)
         {
-            var item = (LanguageItem)SelectLanguages.Value;
-            _translator.OnNotify += Notify;
-            await _translator.Tranlate(Path.Value, item.Id);
+            try
+            {
+                var item = (LanguageItem)SelectLanguages.Value;
+                if (String.IsNullOrEmpty(Path.Value))
+                {
+                    throw new ArgumentNullException();
+                }
+                else
+                {
+                    _translator.OnNotify += Notify;
+                    await _translator.Tranlate(Path.Value, item.Id);
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show("You have not selected the language you will be translating to.", null, MessageBoxButton.OK);
+            }
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show("File not found.", null, MessageBoxButton.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something strange happened.\n" + ex.Message, null, MessageBoxButton.OK);
+            }
         }
 
         private async Task Notify(string message)
         {
-            Percent.Value = message;
+            await Task.Run(() =>
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    Percent.Value = message;
+                });
+            });
         }
     }
 }

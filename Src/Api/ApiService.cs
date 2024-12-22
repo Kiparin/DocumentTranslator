@@ -9,32 +9,34 @@ namespace Api
 {
     public class ApiService
     {
-        private readonly IOpenRouterAIApi _userApi;
+        private readonly IOpenAIChat _userApi;
 
         private string bearer = $"Bearer %Enter your token%";
+        
+        private string ruSetPromt = "Переведи текст c Английского на Русский языки красиво его оформи размеи для MS WORDS c отступами, курсивами, что бы в файле красивор смотрелось. Отвечай мне Только переведенным текстом  без своих комментариев. Вот текст для перевода : ";
 
         public ApiService()
         {
-            _userApi = RestService.For<IOpenRouterAIApi>("https://openrouter.ai");
-
-            var result = SendAsync("Переведи текст который я буду тебе присылать и красиво его оформи для MS WORDS формата .docx. Только переведенный текст"); // test
+            _userApi = RestService.For<IOpenAIChat>("https://api.openai.com");
         }
+
 
         public async Task<MessageResponse> SendAsync(string promt)
         {
+            await Task.Delay(30000); 
+
             var request = new MessageRequest()
             {
-                Model = "openai/gpt-3.5-turbo",
+                Model = "gpt-4o-mini",
                 Messages = new List<Message>
                 {
                    new Message()
                    { 
                        Role = "user",
-                       Content = promt
+                       Content = ruSetPromt+ "\n" + promt
                    }
                 }
             };
-
             var json = JsonConvert.SerializeObject(request);
 
             var result = await _userApi.SendMessage(bearer, "application/json", json);
