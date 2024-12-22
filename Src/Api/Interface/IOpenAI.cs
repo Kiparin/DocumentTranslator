@@ -1,12 +1,9 @@
-﻿using Api.Model;
-
-using Refit;
+﻿using Refit;
 
 namespace Api.Interface
 {
-    public interface IOpenAIChat
+    public interface IOpenAI
     {
-
         [Post("/v1/chat/completions")]
         Task<string> SendMessage(
             [Header("Authorization")] string authorization,

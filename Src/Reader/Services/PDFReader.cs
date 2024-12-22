@@ -1,8 +1,9 @@
-﻿using Reader.Intarfaces.BaseAbstract;
+﻿using Novacode;
+
+using Reader.Intarfaces.BaseAbstract;
 
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-using Novacode;
 
 namespace Reader.Services
 {
@@ -43,7 +44,8 @@ namespace Reader.Services
                 {
                     if (page.Value != null)
                     {
-                        doc.InsertParagraphs(page.Value);
+                        var p = doc.InsertParagraph();
+                        p.Append(page.Value);
                     }
                 }
                 doc.Save();

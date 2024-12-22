@@ -1,5 +1,4 @@
-﻿
-using System.IO;
+﻿using System.IO;
 
 using Api;
 
@@ -12,13 +11,14 @@ namespace DocumentTranslator.Services
     public class Translator : ITranslator
     {
         public delegate Task Notify(string message);
+
         public event Notify OnNotify;
 
         private PDFReader _pdfReade;
         private ApiService _api;
 
-        public Translator(PDFReader pDFReader, ApiService api) 
-        { 
+        public Translator(PDFReader pDFReader, ApiService api)
+        {
             _pdfReade = pDFReader;
             _api = api;
         }
@@ -30,6 +30,7 @@ namespace DocumentTranslator.Services
                 case 1:
                     await RussianTranslate(path);
                     break;
+
                 case 2:
                     break;
             }
@@ -44,14 +45,14 @@ namespace DocumentTranslator.Services
             {
                 await OnNotify?.Invoke("Translate " + item.Key + " page in " + _pdfReade.GetPages().Count);
                 var result = await _api.SendAsync(item.Value);
-                if (result != null) 
+                if (result != null)
                 {
                     var choice = result.Choices.FirstOrDefault();
                     _pdfReade.TranslatedPage.Add(item.Key, choice?.Message.Content ?? "");
                 }
             }
 
-            if(_pdfReade.TranslatedPage.Count != 0)
+            if (_pdfReade.TranslatedPage.Count != 0)
             {
                 await OnNotify?.Invoke("Save to dock");
                 _pdfReade.Save(Path.GetFileName(path));

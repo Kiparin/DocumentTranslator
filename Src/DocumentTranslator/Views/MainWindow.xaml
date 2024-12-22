@@ -10,42 +10,41 @@
         Title="Tranlator AI" Height="200" Width="400
         ">
     <Grid>
-        <ComboBox 
+        <ComboBox
             ItemsSource="{Binding LanguagesItems}"
             DisplayMemberPath="Name"
             SelectedItem="{Binding SelectLanguages.Value, Mode=TwoWay}"
-            Margin="0,27,33,0" 
-            VerticalAlignment="Top" 
-            Height="21" 
+            Margin="0,27,33,0"
+            VerticalAlignment="Top"
+            Height="21"
             HorizontalAlignment="Right"
-            Width="112"
-            />
-        <Label Content="Translate to..." Margin="0,1,66,0" VerticalAlignment="Top"  Width="79" HorizontalAlignment="Right"/>
-        <Label 
-            Content="{Binding Percent.Value}"  
-            Margin="0,137,0,0" 
-            HorizontalContentAlignment="Center" 
-            FontStyle="Italic"  
-            HorizontalAlignment="Center" 
-            Width="313" 
+            Width="112" />
+        <Label Content="Translate to..." Margin="0,1,66,0" VerticalAlignment="Top"  Width="79" HorizontalAlignment="Right" />
+        <Label
+            Content="{Binding Percent.Value}"
+            Margin="0,137,0,0"
+            HorizontalContentAlignment="Center"
+            FontStyle="Italic"
+            HorizontalAlignment="Center"
+            Width="313"
             Height="27"
-            VerticalAlignment="Top"/>
-        <Button 
-            Content="Open File" 
-            Margin="33,24,0,0" 
+            VerticalAlignment="Top" />
+        <Button
+            Content="Open File"
+            Margin="33,24,0,0"
             Height="23"
             Command="{Binding OpenFileCommand}"
             VerticalAlignment="Top"
             HorizontalAlignment="Left"
-            Width="65"/>
-        <TextBlock 
-            Text="{Binding Path.Value}" 
-            Margin="31,52,0,66" 
+            Width="65" />
+        <TextBlock
+            Text="{Binding Path.Value}"
+            Margin="31,52,0,66"
             TextWrapping="Wrap"
-            HorizontalAlignment="Left" 
-            Width="350"/>
-        <Button 
-            Content="Run" 
+            HorizontalAlignment="Left"
+            Width="350" />
+        <Button
+            Content="Run"
             Command="{Binding RunCommand}"
             Margin="168,117,168,0" Height="20" VerticalAlignment="Top" />
     </Grid>

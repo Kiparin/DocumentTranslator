@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -9,16 +8,13 @@ using DocumentTranslator.Services;
 
 using Microsoft.Win32;
 
-using Model.Enums;
 using Model.Model;
 
 namespace DocumentTranslator.ViewModel
 {
     public class DocumentTranslatorAIViewModel
     {
-        private Translator _translator;
-
-        public ObservableCollection<LanguageItem> LanguagesItems { get; set; }
+        public ObservableCollection<LanguageItem> LanguagesItems { get; set; } = Language.GetLanguage;
 
         public NotifyProperty<object> SelectLanguages { get; set; } = new NotifyProperty<object>(new object());
 
@@ -30,17 +26,11 @@ namespace DocumentTranslator.ViewModel
 
         public ICommand RunCommand { get; set; }
 
-
+        private Translator _translator;
 
         public DocumentTranslatorAIViewModel(Translator translator)
         {
             _translator = translator;
-
-            LanguagesItems = new ObservableCollection<LanguageItem>
-            {
-                new LanguageItem { Id = 1, Languages = Languages.Русский },
-                new LanguageItem { Id = 2, Languages = Languages.English }
-            };
 
             OpenFileCommand = new RelayCommand(OpenFile);
             RunCommand = new AsyncRelayCommand(Run);
@@ -75,6 +65,8 @@ namespace DocumentTranslator.ViewModel
                     _translator.OnNotify += Notify;
                     await _translator.Tranlate(Path.Value, item.Id);
                 }
+
+                await Notify("Done");
             }
             catch (InvalidCastException ex)
             {

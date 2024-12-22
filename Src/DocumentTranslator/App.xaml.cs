@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 using DocumentTranslator.DependencyInjection;
 using DocumentTranslator.Views;
@@ -31,5 +30,4 @@ namespace DocumentTranslator
             mainWindow.Show();
         }
     }
-
 }

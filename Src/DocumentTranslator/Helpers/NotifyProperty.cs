@@ -4,7 +4,6 @@ namespace DocumentTranslator.Helpers
 {
     public class NotifyProperty<T> : INotifyPropertyChanged
     {
-
         private T _value;
 
         public NotifyProperty(T value)
@@ -12,11 +11,11 @@ namespace DocumentTranslator.Helpers
             _value = value;
         }
 
-        public T Value 
+        public T Value
         {
             get { return _value; }
-            set 
-            { 
+            set
+            {
                 _value = value;
                 OnPropertyChanged(nameof(Value));
             }
